@@ -19,7 +19,7 @@ public class Form {
     private Long id;
 
     private String formHeader;
-    private String spec;
+    private String aspSpec;
     private String aspName;
     private String aspSkills;
     private String workExperience;

@@ -169,3 +169,54 @@ Content-Type: application/json
 DELETE http://localhost:28245/harmony/vacancy?id=2
 
 <> 2024-05-08T125734.200.json
+
+//
+// Requests for Form
+//
+
+### Find all vacancy in database
+GET http://localhost:28245/harmony/form/all
+
+### Add new form
+POST http://localhost:28245/harmony/form
+Content-Type: application/json
+
+{
+  "aspBirthDate": "01.02.2000",
+  "aspName": "Иванов Илья Максимович",
+  "aspSkills": "Какие то скилы соискателя",
+  "education": "какое то образование",
+  "formHeader": "Заголовок анкеты",
+  "aspSpec": "Специализация соискателя",
+  "workBefore": "отсутствует",
+  "workExperience": "какой то опыт",
+  "vacancy": {
+    "id": 1
+  }
+}
+
+###
+
+### Update  form
+POST http://localhost:28245/harmony/form
+Content-Type: application/json
+
+{
+  "id": 1,
+  "aspBirthDate": "01.02.2003",
+  "aspName": "Иванов Илья Максимович",
+  "aspSkills": "Какие то скилы соискателя",
+  "education": "какое то образование",
+  "formHeader": "Заголовок анкеты",
+  "aspSpec": "Специализация соискателя",
+  "workBefore": "отсутствует",
+  "workExperience": "какой то опыт",
+  "vacancy": {
+    "id": 1
+  }
+}
+
+###
+
+### Delete form
+DELETE http://localhost:28245/harmony/form?id=1
