@@ -1,29 +1,29 @@
 package ru.harmony.serverboot.service;
 
-
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.harmony.serverboot.entity.Spec;
-import ru.harmony.serverboot.repo.SpecRepo;
+import ru.harmony.serverboot.entity.Vacancy;
+import ru.harmony.serverboot.repo.VacancyRepo;
 
 import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class SpecService {
-    private final SpecRepo repo;
+public class VacancyService {
+    private final VacancyRepo repo;
 
-    public List<Spec> getAll() {
+    public List<Vacancy> getAll() {
         return repo.findAll();
     }
 
     // place for findById
 
-    public Spec save(Spec data) {
+    public Vacancy save(Vacancy data) {
         return repo.save(data);
     }
 
-    public void update(Spec data) {
+    public void update(Vacancy data) {
         repo.save(data);
     }
 

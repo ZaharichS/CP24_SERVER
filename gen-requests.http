@@ -1,0 +1,171 @@
+// Requests for Worker data
+
+### Find all worker in database
+GET http://localhost:28245/harmony/worker/all
+
+### Add new worker
+POST http://localhost:28245/harmony/worker
+Content-Type: application/json
+
+// access role:
+// id - 1 = Admin
+// id - 2 = Recruiter
+// id - 3 = Guest
+
+{
+  "workerName": "Фамилия Имя Отчество",
+  "position": "Должность",
+  "access": {
+    "id": 3
+  }
+}
+###
+
+### Update worker
+PUT http://localhost:28245/harmony/worker
+Content-Type: application/json
+
+{
+  "id": 2,
+  "workerName": "Петухова Марина Артёмовна",
+  "position": "Менеджер по поиску свободных вакансий",
+  "access": {
+    "id": 2
+  }
+}
+
+<> 2024-05-08T121829.200.json
+###
+
+### Delete worker
+DELETE http://localhost:28245/harmony/worker?id=3
+
+<> 2024-05-08T122209.200.json
+
+
+//
+// Requests for Access data
+//
+### Find all access in database
+GET http://localhost:28245/harmony/access/all
+
+### Add new access role
+POST http://localhost:28245/harmony/access
+Content-Type: application/json
+
+{
+  "name": "Неизвестно"
+}
+###
+
+### Update access role
+PUT http://localhost:28245/harmony/access
+Content-Type: application/json
+
+{
+  "id": 5,
+  "name": "Пользователь(был неизвестно)"
+}
+
+<> 2024-05-08T114352.200.json
+<> 2024-05-08T114310.400.html
+###
+
+### Delete access role
+DELETE http://localhost:28245/harmony/access?id=6
+
+<> 2024-05-08T114412.200.json
+<> 2024-05-08T114405.200.json
+###
+
+
+//
+// Requests for spec
+//
+
+### Find all spec in database
+GET http://localhost:28245/harmony/spec/all
+
+### Add new spec
+POST http://localhost:28245/harmony/spec
+Content-Type: application/json
+
+{
+  "name": "Наука"
+}
+
+<> 2024-05-08T124853.200.json
+<> 2024-05-08T124845.200.json
+<> 2024-05-08T124834.200.json
+###
+
+### Update access role
+PUT http://localhost:28245/harmony/spec
+Content-Type: application/json
+
+{
+  "id": 3,
+  "name": "Кулинария(была наука)"
+}
+
+<> 2024-05-08T124937.200.json
+###
+
+### Delete access role
+DELETE http://localhost:28245/harmony/spec?id=6
+
+<> 2024-05-08T124958.200.json
+<> 2024-05-08T114412.200.json
+<> 2024-05-08T114405.200.json
+###
+
+//
+// Requests for vacancy
+//
+
+### Find all vacancy in database
+GET http://localhost:28245/harmony/vacancy/all
+
+### Add new vacancy
+POST http://localhost:28245/harmony/vacancy
+Content-Type: application/json
+
+{
+  "name": "Разработчик Java",
+  "fromEmployer": "Название компании",
+  "wage": "заработная плата",
+  "workExperience": "не указан",
+  "headcount": "1 работник",
+  "spec": {
+    "id": 2
+  }
+}
+
+<> 2024-05-08T125534.200.json
+###
+
+### Update vacancy
+PUT http://localhost:28245/harmony/vacancy
+Content-Type: application/json
+
+{
+  "id" : "1",
+  "name": "Разработчик Java",
+  "fromEmployer": "Название компании",
+  "wage": "заработная плата",
+  "workExperience": "без опыта",
+  "headcount": "1 работник",
+  "spec": {
+    "id": 2
+  }
+}
+
+<> 2024-05-08T125723.200.json
+<> 2024-05-08T125641.200.json
+<> 2024-05-08T125534.200.json
+###
+
+### Delete access role
+DELETE http://localhost:28245/harmony/vacancy?id=2
+
+<> 2024-05-08T125734.200.json
