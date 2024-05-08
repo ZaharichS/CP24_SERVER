@@ -3,28 +3,27 @@ package ru.harmony.serverboot.service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.harmony.serverboot.entity.Access;
-import ru.harmony.serverboot.repo.AccessRepo;
+import ru.harmony.serverboot.entity.Worker;
+import ru.harmony.serverboot.repo.WorkerRepo;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class AccessService {
-    private final AccessRepo repo;
+public class WorkerService {
+    private final WorkerRepo repo;
 
-    public List<Access> getAll() {
+    public List<Worker> getAll() {
         return repo.findAll();
     }
 
     // place for findById
 
-    public Access save(Access data) {
+    public Worker save(Worker data) {
         return repo.save(data);
     }
 
-    // "update method"
-    public void update(Access data) {
+    public void update(Worker data) {
         repo.save(data);
     }
 

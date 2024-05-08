@@ -18,6 +18,4 @@ public class Spec {
     private Long id;
 
     private String name;
-
-    // place for relationship
 }
