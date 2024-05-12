@@ -63,7 +63,7 @@ PUT http://localhost:28245/harmony/access
 Content-Type: application/json
 
 {
-  "id": 5,
+  "id": 0,
   "name": "Пользователь(был неизвестно)"
 }
 
@@ -72,10 +72,15 @@ Content-Type: application/json
 ###
 
 ### Delete access role
-DELETE http://localhost:28245/harmony/access?id=6
+DELETE http://localhost:28245/harmony/access?id=0
 
 <> 2024-05-08T114412.200.json
 <> 2024-05-08T114405.200.json
+###
+
+### Find access role by id
+GET http://localhost:28245/harmony/access?id=0
+
 ###
 
 

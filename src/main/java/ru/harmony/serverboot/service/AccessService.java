@@ -17,7 +17,10 @@ public class AccessService {
         return repo.findAll();
     }
 
-    // place for findById
+    // find access by id
+    public Optional<Access> findById(Long id) {
+        return repo.findById(id);
+    }
 
     public Access save(Access data) {
         return repo.save(data);

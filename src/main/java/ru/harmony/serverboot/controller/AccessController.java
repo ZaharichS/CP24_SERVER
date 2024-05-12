@@ -20,30 +20,40 @@ public class AccessController {
         return ResponseEntity.ok(new ListResponse<Access>(true,  "Роли доступа", service.getAll()));
     }
 
-    // place for getById method, if it needs
+    @GetMapping
+    // getById method
+    public ResponseEntity<DataResponse<Access>> getById(@RequestParam Long id) {
+        if (service.findById(id).isPresent()) {
+            return ResponseEntity.ok(new DataResponse<Access>(true, "Найдена роль доступа", service.findById(id).orElseThrow()));
+        } else {
+            return ResponseEntity.badRequest().body(new DataResponse<Access>(false, "Роль доступа не найдена"));
+        }
+    }
 
     @PostMapping
     public ResponseEntity<DataResponse<Access>> save(@RequestBody Access access) {
         // maybe try catch block
+        // or not
         return ResponseEntity.ok(new DataResponse<Access>(true, "Добавлена новая роль доступа", service.save(access)));
     }
 
     @PutMapping
     public ResponseEntity<BaseResponse> update(@RequestBody Access access) {
-        // maybe try catch block
-        // for check id in request body ? or not
-        // and send message if it's true
-
-        service.update(access);
-        return ResponseEntity.ok(new BaseResponse(true,"Роль доступа была обновлена"));
+        if (service.findById(access.getId()).isPresent()) {
+            service.update(access);
+            return ResponseEntity.ok(new BaseResponse(true,"Роль доступа была обновлена"));
+        } else {
+            return ResponseEntity.badRequest().body(new BaseResponse(false, "Роль не найдена и не обновлена"));
+        }
     }
 
     @DeleteMapping
     public ResponseEntity<BaseResponse> deleteById(@RequestParam Long id) {
-        // maybe try catch block
-        // for check id in request body ? or not
-
-        service.delete(id);
-        return ResponseEntity.ok(new BaseResponse(true,"Роль доступа была удалена"));
+        if (service.findById(id).isPresent()) {
+            service.delete(id);
+            return ResponseEntity.ok(new BaseResponse(true,"Роль доступа была удалена"));
+        } else {
+            return ResponseEntity.badRequest().body(new BaseResponse(false, "Роль не найдена и не удалена"));
+        }
     }
 }
