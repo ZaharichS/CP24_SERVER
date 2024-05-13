@@ -6,6 +6,7 @@ import ru.harmony.serverboot.entity.Form;
 import ru.harmony.serverboot.repo.FormRepo;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -16,7 +17,10 @@ public class FormService {
         return repo.findAll();
     }
 
-    // place for findById
+    // find Form by id
+    public Optional<Form> findById(Long id) {
+        return repo.findById(id);
+    }
 
     public Form save(Form data) {
         return repo.save(data);

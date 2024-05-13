@@ -3,6 +3,7 @@ package ru.harmony.serverboot.controller;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.harmony.serverboot.entity.Access;
 import ru.harmony.serverboot.entity.Form;
 import ru.harmony.serverboot.entity.Vacancy;
 import ru.harmony.serverboot.response.BaseResponse;
@@ -28,23 +29,34 @@ public class FormController {
         return ResponseEntity.ok(new DataResponse<Form>(true, "Добавлена новая анкета", service.save(form)));
     }
 
+    @GetMapping
+    // getById method
+    public ResponseEntity<DataResponse<Form>> getById(@RequestParam Long id) {
+        if (service.findById(id).isPresent()) {
+            return ResponseEntity.ok(new DataResponse<Form>(true, "Найдена анкета", service.findById(id).orElseThrow()));
+        } else {
+            return ResponseEntity.badRequest().body(new DataResponse<Form>(false, "Анкета не найдена"));
+        }
+    }
+
     @DeleteMapping
     public ResponseEntity<BaseResponse> deleteById(@RequestParam Long id) {
-        // maybe try catch block
-        // for check id in request body ? or not
-
-        service.delete(id);
-        return ResponseEntity.ok(new BaseResponse(true,"Анкета удалена"));
+        if (service.findById(id).isPresent()) {
+            service.delete(id);
+            return ResponseEntity.ok(new BaseResponse(true, "Анкета удалена"));
+        } else {
+            return ResponseEntity.badRequest().body(new BaseResponse(false, "Анкета не найдена и не удалена"));
+        }
     }
 
     @PutMapping
     public ResponseEntity<BaseResponse> update(@RequestBody Form form) {
-        // maybe try catch block
-        // for check id in request body ? or not
-        // and send message if it's true
-
-        service.update(form);
-        return ResponseEntity.ok(new BaseResponse(true,"Анкета была обновлена"));
+        if (service.findById(form.getId()).isPresent()) {
+            service.update(form);
+            return ResponseEntity.ok(new BaseResponse(true,"Анкета была обновлена"));
+        } else {
+            return ResponseEntity.badRequest().body(new BaseResponse(false, "Анкета не найдена и не обновлена"));
+        }
     }
 
 }
