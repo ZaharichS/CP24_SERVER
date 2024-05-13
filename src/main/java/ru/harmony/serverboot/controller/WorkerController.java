@@ -10,6 +10,8 @@ import ru.harmony.serverboot.response.DataResponse;
 import ru.harmony.serverboot.response.ListResponse;
 import ru.harmony.serverboot.service.WorkerService;
 
+import java.util.Optional;
+
 @RequestMapping("/harmony/worker")
 @AllArgsConstructor
 @RestController
@@ -21,7 +23,15 @@ public class WorkerController {
         return ResponseEntity.ok(new ListResponse<Worker>(true,  "Сотрудники", service.getAll()));
     }
 
-    // place for getById method, if it needs
+    @GetMapping
+    // getById method
+    public ResponseEntity<DataResponse<Worker>> getById(@RequestParam Long id) {
+        if (service.findById(id).isPresent()) {
+            return ResponseEntity.ok(new DataResponse<Worker>(true, "Найден сотрудник", service.findById(id).orElseThrow()));
+        } else {
+            return ResponseEntity.badRequest().body(new DataResponse<Worker>(false, "Сотрудник не найдена"));
+        }
+    }
 
     @PostMapping
     public ResponseEntity<DataResponse<Worker>> save(@RequestBody Worker worker) {
@@ -31,20 +41,21 @@ public class WorkerController {
 
     @PutMapping
     public ResponseEntity<BaseResponse> update(@RequestBody Worker worker) {
-        // maybe try catch block
-        // for check id in request body ? or not
-        // and send message if it's true
-
-        service.update(worker);
-        return ResponseEntity.ok(new BaseResponse(true,"Данные сотрудника былы обновлены"));
+        if (service.findById(worker.getId()).isPresent()) {
+            service.update(worker);
+            return ResponseEntity.ok(new BaseResponse(true, "Данные сотрудника былы обновлены"));
+        } else {
+            return ResponseEntity.badRequest().body(new BaseResponse(false, "Сотрудник не найден и не обновлен"));
+        }
     }
 
     @DeleteMapping
     public ResponseEntity<BaseResponse> deleteById(@RequestParam Long id) {
-        // maybe try catch block
-        // for check id in request body ? or not
-
-        service.delete(id);
-        return ResponseEntity.ok(new BaseResponse(true,"Сотрудник был удален"));
+        if (service.findById(id).isPresent()) {
+            service.delete(id);
+            return ResponseEntity.ok(new BaseResponse(true, "Сотрудник был удален"));
+        } else {
+            return ResponseEntity.badRequest().body(new BaseResponse(false, "Сотрудник не найден и не удален"));
+        }
     }
 }

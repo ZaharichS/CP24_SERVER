@@ -7,6 +7,7 @@ import ru.harmony.serverboot.entity.Worker;
 import ru.harmony.serverboot.repo.WorkerRepo;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -17,7 +18,11 @@ public class WorkerService {
         return repo.findAll();
     }
 
-    // place for findById
+    // find access by id
+    public Optional<Worker> findById(Long id) {
+        return repo.findById(id);
+    }
+
 
     public Worker save(Worker data) {
         return repo.save(data);
