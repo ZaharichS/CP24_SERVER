@@ -3,14 +3,16 @@
 ### Find all worker in database
 GET http://localhost:28245/harmony/worker/all
 
-### Add new worker
-POST http://localhost:28245/harmony/worker
-Content-Type: application/json
-
+### Find workers by access id
+GET http://localhost:28245/harmony/worker/access?id=2
 // access role:
 // id - 1 = Admin
 // id - 2 = Recruiter
 // id - 3 = Guest
+
+### Add new worker
+POST http://localhost:28245/harmony/worker
+Content-Type: application/json
 
 {
   "workerName": "Фамилия Имя Отчество",
