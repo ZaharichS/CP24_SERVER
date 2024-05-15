@@ -23,6 +23,18 @@ public class VacancyController {
         return ResponseEntity.ok(new ListResponse<Vacancy>(true, "Вакансии", service.getAll()));
     }
 
+    // get all companies
+    @GetMapping("/all-employee")
+    public ResponseEntity<ListResponse<String>> getAllByEmployee() {
+        return ResponseEntity.ok(new ListResponse<String>(true, "Все компании", service.getAllByEmployee()));
+    }
+
+    // get all vacancy by workExperience
+    @GetMapping("/all-workexp")
+    public ResponseEntity<ListResponse<Vacancy>> getAllByWorkExp(@RequestParam Long num) {
+        return ResponseEntity.ok(new ListResponse<Vacancy>(true, "Все компании", service.getAllByWorkExp(num)));
+    }
+
     @GetMapping
     // getById method
     public ResponseEntity<DataResponse<Vacancy>> getById(@RequestParam Long id) {

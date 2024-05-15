@@ -35,4 +35,8 @@ public class Vacancy {
     @OneToMany(mappedBy = "vacancy", cascade = CascadeType.ALL)
     private List<Form> form;
 
+    @Override
+    public String toString() {
+        return fromEmployer;
+    }
 }

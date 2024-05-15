@@ -23,6 +23,15 @@ public class VacancyService {
         return repo.findById(id);
     }
 
+    // find Vacancy by employee
+    public List<String> getAllByEmployee() {
+        return repo.findByEmployee();
+    }
+
+    // find Vacancy by workExperience
+    public List<Vacancy> getAllByWorkExp(Long num) {
+        return repo.findallByWorkExperience(num);
+    }
 
     public Vacancy save(Vacancy data) {
         return repo.save(data);
