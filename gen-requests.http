@@ -98,7 +98,7 @@ POST http://localhost:28245/harmony/spec
 Content-Type: application/json
 
 {
-  "name": "Наука"
+  "name": "IT"
 }
 
 <> 2024-05-08T124853.200.json
@@ -181,7 +181,7 @@ DELETE http://localhost:28245/harmony/vacancy?id=2
 // Requests for Form
 //
 
-### Find all vacancy in database
+### Find all form in database
 GET http://localhost:28245/harmony/form/all
 
 ### Add new form

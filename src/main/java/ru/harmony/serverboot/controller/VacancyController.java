@@ -31,8 +31,22 @@ public class VacancyController {
 
     // get all vacancy by workExperience
     @GetMapping("/all-workexp")
-    public ResponseEntity<ListResponse<Vacancy>> getAllByWorkExp(@RequestParam Long num) {
-        return ResponseEntity.ok(new ListResponse<Vacancy>(true, "Все компании", service.getAllByWorkExp(num)));
+    public ResponseEntity<ListResponse<Vacancy>> getAllByWorkExp(@RequestParam Long workExp) {
+        if (!service.getAllByWorkExp(workExp).isEmpty()) {
+            return ResponseEntity.ok(new ListResponse<Vacancy>(true, "Вакансии по опыту работы", service.getAllByWorkExp(workExp)));
+        } else {
+            return ResponseEntity.badRequest().body(new ListResponse<Vacancy>(false, "Вакансия не найдены", null));
+        }
+    }
+
+    // get all vacancy by wage
+    @GetMapping("/all-wage")
+    public ResponseEntity<ListResponse<Vacancy>> getAllByWage(@RequestParam String wage) {
+        if (!service.getAllByWage(wage).isEmpty()) {
+            return ResponseEntity.ok(new ListResponse<Vacancy>(true, "Вакансии по заработной плате", service.getAllByWage(wage)));
+        } else {
+            return ResponseEntity.badRequest().body(new ListResponse<Vacancy>(false, "Вакансия не найдены", null));
+        }
     }
 
     @GetMapping

@@ -22,6 +22,11 @@ public class FormService {
         return repo.findById(id);
     }
 
+    // find Form by spec
+    public List<Form> findBySpec(String spec) {
+        return repo.findBySpec(spec);
+    }
+
     public Form save(Form data) {
         return repo.save(data);
     }

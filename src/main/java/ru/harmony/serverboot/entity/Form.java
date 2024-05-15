@@ -22,7 +22,7 @@ public class Form {
     private String formHeader;
     private String aspSpec;
 
-    @Pattern(regexp = "[А-Я][а-я]{1,20}")
+    @Pattern(regexp = "[А-Я][а-я]{1,20} [А-Я][а-я]{1,20} [А-Я][а-я]{1,20}")
     private String aspName;
 
     private String aspSkills;

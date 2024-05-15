@@ -18,7 +18,7 @@ public class Vacancy {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Pattern(regexp = "[А-Я][а-я]{1,20}")
+    // regex for vacancy header
     private String name;
     private String fromEmployer;
     private String wage;
@@ -34,9 +34,4 @@ public class Vacancy {
     @JsonIgnore
     @OneToMany(mappedBy = "vacancy", cascade = CascadeType.ALL)
     private List<Form> form;
-
-    @Override
-    public String toString() {
-        return fromEmployer;
-    }
 }

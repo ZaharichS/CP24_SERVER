@@ -39,6 +39,16 @@ public class FormController {
         }
     }
 
+    @GetMapping("all-spec")
+    // getById method
+    public ResponseEntity<ListResponse<Form>> getBySpec(@RequestParam String spec) {
+        if (!service.findBySpec(spec).isEmpty()) {
+            return ResponseEntity.ok(new ListResponse<Form>(true, "Найдена анкеты по категории", service.findBySpec(spec)));
+        } else {
+            return ResponseEntity.badRequest().body(new ListResponse<Form>(false, "Анкета не найдена", null));
+        }
+    }
+
     @DeleteMapping
     public ResponseEntity<BaseResponse> deleteById(@RequestParam Long id) {
         if (service.findById(id).isPresent()) {

@@ -6,6 +6,7 @@ import ru.harmony.serverboot.entity.Access;
 import ru.harmony.serverboot.entity.Vacancy;
 import ru.harmony.serverboot.repo.VacancyRepo;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,8 +30,13 @@ public class VacancyService {
     }
 
     // find Vacancy by workExperience
-    public List<Vacancy> getAllByWorkExp(Long num) {
-        return repo.findallByWorkExperience(num);
+    public List<Vacancy> getAllByWorkExp(Long workExp) {
+        return repo.findByWorkExperience(String.valueOf(workExp));
+    }
+
+    // find Vacancy by workExperience
+    public List<Vacancy> getAllByWage(String wage) {
+        return repo.findByWage(wage);
     }
 
     public Vacancy save(Vacancy data) {
