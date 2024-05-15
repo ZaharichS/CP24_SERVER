@@ -35,7 +35,7 @@ public class SpecController {
     @PostMapping
     public ResponseEntity<DataResponse<Spec>> save(@RequestBody Spec spec) {
         // maybe try catch block
-        return ResponseEntity.ok(new DataResponse<Spec>(true, "Добавлена новая категория специализаций", service.save(spec)));
+        return ResponseEntity.ok(new DataResponse<Spec>(true, "Добавлена новая категория", service.save(spec)));
     }
 
     @DeleteMapping

@@ -30,7 +30,7 @@ public class WorkerController {
         if (service.findById(id).isPresent()) {
             return ResponseEntity.ok(new DataResponse<Worker>(true, "Найден сотрудник", service.findById(id).orElseThrow()));
         } else {
-            return ResponseEntity.badRequest().body(new DataResponse<Worker>(false, "Сотрудник не найдена"));
+            return ResponseEntity.badRequest().body(new DataResponse<Worker>(false, "Сотрудник не найден"));
         }
     }
 

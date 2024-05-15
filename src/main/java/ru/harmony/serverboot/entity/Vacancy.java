@@ -2,6 +2,7 @@ package ru.harmony.serverboot.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
 import java.util.List;
@@ -17,6 +18,7 @@ public class Vacancy {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Pattern(regexp = "[А-Я][а-я]{1,20}")
     private String name;
     private String fromEmployer;
     private String wage;
