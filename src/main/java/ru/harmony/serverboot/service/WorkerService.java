@@ -35,4 +35,8 @@ public class WorkerService {
     public void delete(Long id) {
         repo.deleteById(id);
     }
+
+    public List<Worker> findByAccess(Long id) {
+        return repo.findWorkerByAccess_Id(id);
+    }
 }

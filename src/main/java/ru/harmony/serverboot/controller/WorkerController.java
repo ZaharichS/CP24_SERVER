@@ -10,6 +10,7 @@ import ru.harmony.serverboot.response.DataResponse;
 import ru.harmony.serverboot.response.ListResponse;
 import ru.harmony.serverboot.service.WorkerService;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequestMapping("/harmony/worker")
@@ -30,6 +31,16 @@ public class WorkerController {
             return ResponseEntity.ok(new DataResponse<Worker>(true, "Найден сотрудник", service.findById(id).orElseThrow()));
         } else {
             return ResponseEntity.badRequest().body(new DataResponse<Worker>(false, "Сотрудник не найдена"));
+        }
+    }
+
+    @GetMapping("/access")
+    // getById method
+    public ResponseEntity<ListResponse<Worker>> getByAccess(@RequestParam Long id) {
+        if (!service.findByAccess(id).isEmpty()) {
+            return ResponseEntity.ok(new ListResponse<Worker>(true, "Сотрудники с этой ролью", service.findByAccess(id)));
+        } else {
+            return ResponseEntity.badRequest().body(new ListResponse<Worker>(false, "Сотрудники с этой ролью не найдены", null));
         }
     }
 
