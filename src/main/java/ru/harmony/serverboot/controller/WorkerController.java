@@ -24,6 +24,26 @@ public class WorkerController {
         return ResponseEntity.ok(new ListResponse<Worker>(true,  "Сотрудники", service.getAll()));
     }
 
+    @GetMapping("/all-accessIn")
+    public ResponseEntity<ListResponse<Worker>> getAllByAccessIn(){
+        return ResponseEntity.ok(new ListResponse<Worker>(true,  "Сотрудники  у которых есть доступ к ИС", service.getAllByAccessIn()));
+    }
+
+    @GetMapping("/all-accessOut")
+    public ResponseEntity<ListResponse<Worker>> getAllByAccessOut(){
+        return ResponseEntity.ok(new ListResponse<Worker>(true,  "Сотрудники  у которых нет доступа к ИС", service.getAllByAccessOut()));
+    }
+
+    @GetMapping("/all-recruter")
+    public ResponseEntity<ListResponse<Worker>> getAllRecruter(){
+        return ResponseEntity.ok(new ListResponse<Worker>(true,  "Сотрудники  рекрутеры", service.getAllRecruter()));
+    }
+
+    @GetMapping("/all-workerFilter")
+    public ResponseEntity<ListResponse<Worker>> getAllWorkerFiltered(){
+        return ResponseEntity.ok(new ListResponse<Worker>(true,  "Сотрудники  по фильтру name", service.getAllByNameFilter()));
+    }
+
     @GetMapping
     // getById method
     public ResponseEntity<DataResponse<Worker>> getById(@RequestParam Long id) {
@@ -41,6 +61,16 @@ public class WorkerController {
             return ResponseEntity.ok(new ListResponse<Worker>(true, "Сотрудники с этой ролью", service.findByAccess(id)));
         } else {
             return ResponseEntity.badRequest().body(new ListResponse<Worker>(false, "Сотрудники с этой ролью не найдены", null));
+        }
+    }
+
+    @GetMapping("/all-name")
+    // getById method
+    public ResponseEntity<ListResponse<Worker>> getByName(@RequestParam String name) {
+        if (!service.findByName(name).isEmpty()) {
+            return ResponseEntity.ok(new ListResponse<Worker>(true, "Сотрудник с ФИО {" + name + "}", service.findByName(name)));
+        } else {
+            return ResponseEntity.badRequest().body(new ListResponse<Worker>(false, "Сотрудник с этим ФИО {" + name + "} не найден", null));
         }
     }
 

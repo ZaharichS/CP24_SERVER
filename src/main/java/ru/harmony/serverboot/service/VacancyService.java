@@ -39,6 +39,16 @@ public class VacancyService {
         return repo.findByWage(wage);
     }
 
+    // find Vacancy by name and spec_name
+    public List<Vacancy> findByNameSpecAndSpecName(String name, String spec_name) {
+        return repo.findByNameAndSpec_Name(name, spec_name);
+    }
+
+    // delete Vacancy by name and spec_name
+    public Integer deleteByNameAndSpecName(String name, String spec_name) {
+        return repo.deleteByNameAndSpec_Name(name, spec_name);
+    }
+
     public Vacancy save(Vacancy data) {
         return repo.save(data);
     }

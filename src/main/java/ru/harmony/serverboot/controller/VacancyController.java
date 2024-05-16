@@ -2,6 +2,7 @@ package ru.harmony.serverboot.controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import ru.harmony.serverboot.entity.Access;
 import ru.harmony.serverboot.entity.Spec;
@@ -33,9 +34,9 @@ public class VacancyController {
     @GetMapping("/all-workexp")
     public ResponseEntity<ListResponse<Vacancy>> getAllByWorkExp(@RequestParam Long workExp) {
         if (!service.getAllByWorkExp(workExp).isEmpty()) {
-            return ResponseEntity.ok(new ListResponse<Vacancy>(true, "Вакансии по опыту работы", service.getAllByWorkExp(workExp)));
+            return ResponseEntity.ok(new ListResponse<Vacancy>(true, "Вакансии по опыту работы {" + workExp +"}", service.getAllByWorkExp(workExp)));
         } else {
-            return ResponseEntity.badRequest().body(new ListResponse<Vacancy>(false, "Вакансия не найдены", null));
+            return ResponseEntity.badRequest().body(new ListResponse<Vacancy>(false, "Вакансия по опыту работы {" + workExp +"} не найдены", null));
         }
     }
 
@@ -43,9 +44,9 @@ public class VacancyController {
     @GetMapping("/all-wage")
     public ResponseEntity<ListResponse<Vacancy>> getAllByWage(@RequestParam String wage) {
         if (!service.getAllByWage(wage).isEmpty()) {
-            return ResponseEntity.ok(new ListResponse<Vacancy>(true, "Вакансии по заработной плате", service.getAllByWage(wage)));
+            return ResponseEntity.ok(new ListResponse<Vacancy>(true, "Вакансии по заработной плате {" + wage + "}", service.getAllByWage(wage)));
         } else {
-            return ResponseEntity.badRequest().body(new ListResponse<Vacancy>(false, "Вакансия не найдены", null));
+            return ResponseEntity.badRequest().body(new ListResponse<Vacancy>(false, "Вакансия по заработной плате {" + wage + "} не найдены", null));
         }
     }
 
@@ -69,6 +70,17 @@ public class VacancyController {
     public ResponseEntity<BaseResponse> deleteById(@RequestParam Long id) {
         if (service.findById(id).isPresent()) {
             service.delete(id);
+            return ResponseEntity.ok(new BaseResponse(true, "Вакансия удалена"));
+        } else {
+            return ResponseEntity.badRequest().body(new BaseResponse(false, "Вакансия не найдена и не удалена"));
+        }
+    }
+
+    @DeleteMapping("/del-bynames")
+    @Transactional
+    public ResponseEntity<BaseResponse> deleteByNameAndSpecName(@RequestParam String name, String specName) {
+        if (!service.findByNameSpecAndSpecName(name, specName).isEmpty()) {
+            service.deleteByNameAndSpecName(name, specName);
             return ResponseEntity.ok(new BaseResponse(true, "Вакансия удалена"));
         } else {
             return ResponseEntity.badRequest().body(new BaseResponse(false, "Вакансия не найдена и не удалена"));

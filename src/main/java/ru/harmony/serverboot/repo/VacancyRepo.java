@@ -15,4 +15,8 @@ public interface VacancyRepo extends JpaRepository<Vacancy, Long> {
     List<Vacancy> findByWorkExperience(String workExp);
 
     List<Vacancy> findByWage(String wage);
+
+    Integer deleteByNameAndSpec_Name(String name, String spec_name);
+
+    List<Vacancy> findByNameAndSpec_Name(String name, String spec);
 }

@@ -2,6 +2,7 @@ package ru.harmony.serverboot.controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import ru.harmony.serverboot.entity.Access;
 import ru.harmony.serverboot.entity.Form;
@@ -21,6 +22,38 @@ public class FormController {
     @GetMapping("/all")
     public ResponseEntity<ListResponse<Form>> getAll() {
         return ResponseEntity.ok(new ListResponse<Form>(true, "Анкеты", service.getAll()));
+    }
+
+    @GetMapping("/all-headerSpec")
+    public ResponseEntity<ListResponse<Form>> getByHeaderAndSpec(@RequestParam String header, String spec) {
+        if (!service.findByHeaderAndSpec(header, spec).isEmpty()) {
+            return ResponseEntity.ok(new ListResponse<Form>(true, "Анкеты по заголовку и специализации { " + header + ", " + spec + "}", service.findByHeaderAndSpec(header, spec)));
+        } else {
+            return ResponseEntity.badRequest().body(new ListResponse<Form>(false, "Анкета по заголовку и специализации {" + header + ", " + spec + "} не найдена", null));
+        }
+    }
+
+    @GetMapping("/all-aspName")
+    public ResponseEntity<ListResponse<Form>> getByAspName(@RequestParam String name) {
+        if (!service.findByAspName(name).isEmpty()) {
+            return ResponseEntity.ok(new ListResponse<Form>(true, "Анкеты по ФИО {" + name +"}", service.findByAspName(name)));
+        } else {
+            return ResponseEntity.badRequest().body(new ListResponse<Form>(false, "Анкета по ФИО {" + name + "} не найдена", null));
+        }
+    }
+
+    @GetMapping("/all-aspDateBirth")
+    public ResponseEntity<ListResponse<Form>> getByAspBirthDate(@RequestParam String date) {
+        if (!service.findByAspBirth(date).isEmpty()) {
+            return ResponseEntity.ok(new ListResponse<Form>(true, "Анкеты по дате рождения {" + date +"}", service.findByAspBirth(date)));
+        } else {
+            return ResponseEntity.badRequest().body(new ListResponse<Form>(false, "Анкеты по дате рождения {" + date +"}\" не найдены", null));
+        }
+    }
+
+    @GetMapping("/all-surname")
+    public ResponseEntity<ListResponse<Form>> getAllBySurname() {
+            return ResponseEntity.ok(new ListResponse<Form>(true, "Анкеты", service.findByFilterAspName()));
     }
 
     @PostMapping
@@ -43,9 +76,30 @@ public class FormController {
     // getById method
     public ResponseEntity<ListResponse<Form>> getBySpec(@RequestParam String spec) {
         if (!service.findBySpec(spec).isEmpty()) {
-            return ResponseEntity.ok(new ListResponse<Form>(true, "Найдена анкеты по категории", service.findBySpec(spec)));
+            return ResponseEntity.ok(new ListResponse<Form>(true, "Найдена анкеты по категории {" + spec + "}", service.findBySpec(spec)));
         } else {
             return ResponseEntity.badRequest().body(new ListResponse<Form>(false, "Анкета не найдена", null));
+        }
+    }
+
+    @DeleteMapping("del-aspname")
+    public ResponseEntity<BaseResponse> deleteByAspName(@RequestParam String name) {
+        if (!service.findByAspName(name).isEmpty()) {
+            service.deleteByAspName(name);
+            return ResponseEntity.ok(new BaseResponse(true, "Анкета удалена"));
+        } else {
+            return ResponseEntity.badRequest().body(new BaseResponse(false, "Анкета не найдена и не удалена"));
+        }
+    }
+
+    @DeleteMapping("all-headerSpec")
+    @Transactional
+    public ResponseEntity<BaseResponse> deleteByHeaderSpec(@RequestParam String header, String spec) {
+        if (!service.findByHeaderAndSpec(header, spec).isEmpty()) {
+            service.deleteByHeaderSpec(header, spec);
+            return ResponseEntity.ok(new BaseResponse(true, "Анкета удалена"));
+        } else {
+            return ResponseEntity.badRequest().body(new BaseResponse(false, "Анкета не найдена и не удалена"));
         }
     }
 

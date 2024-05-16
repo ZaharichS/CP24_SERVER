@@ -18,6 +18,23 @@ public class WorkerService {
         return repo.findAll();
     }
 
+    public List<Worker> getAllByAccessIn() {
+        return repo.findByAccessIn();
+    }
+
+    public List<Worker> getAllByAccessOut() {
+        return repo.findByAccessOut();
+    }
+
+    public List<Worker> getAllRecruter() {
+        return repo.findByRecruter();
+    }
+
+    public List<Worker> getAllByNameFilter() {
+        return repo.findAllByOrderByWorkerName();
+    }
+
+
     // find access by id
     public Optional<Worker> findById(Long id) {
         return repo.findById(id);
@@ -38,5 +55,9 @@ public class WorkerService {
 
     public List<Worker> findByAccess(Long id) {
         return repo.findWorkerByAccess_Id(id);
+    }
+
+    public List<Worker> findByName(String name) {
+        return repo.findByWorkerName(name);
     }
 }

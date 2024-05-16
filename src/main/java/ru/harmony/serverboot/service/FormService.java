@@ -3,6 +3,7 @@ package ru.harmony.serverboot.service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.harmony.serverboot.entity.Form;
+import ru.harmony.serverboot.entity.Vacancy;
 import ru.harmony.serverboot.repo.FormRepo;
 
 import java.util.List;
@@ -24,7 +25,28 @@ public class FormService {
 
     // find Form by spec
     public List<Form> findBySpec(String spec) {
-        return repo.findBySpec(spec);
+        return repo.findByVacancySpecName(spec);
+    }
+
+    // find  Form by aspname
+    public List<Form> findByAspName(String name) {
+        return repo.findByAspName(name);
+    }
+
+    // find  Form by form header and spec
+    public List<Form> findByHeaderAndSpec(String header, String spec) {
+        return repo.findByFormHeaderAndVacancySpecName(header, spec);
+    }
+
+
+    // find  Form by AspName but filter
+    public List<Form> findByFilterAspName() {
+        return repo.findAllByOrderByAspName();
+    }
+
+    // find  Form by AspBirthDate
+    public List<Form> findByAspBirth(String birth) {
+        return repo.findByAspBirthDate(birth);
     }
 
     public Form save(Form data) {
@@ -37,5 +59,15 @@ public class FormService {
 
     public void delete(Long id) {
         repo.deleteById(id);
+    }
+
+    // delete Form by aspname
+    public Integer deleteByAspName(String name) {
+        return repo.deleteByAspName(name);
+    }
+
+    // delete Form by form header and spec
+    public Integer deleteByHeaderSpec(String header, String spec) {
+        return repo.deleteByFormHeaderAndVacancySpecName(header, spec);
     }
 }
