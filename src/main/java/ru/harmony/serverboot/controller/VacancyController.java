@@ -1,5 +1,8 @@
 package ru.harmony.serverboot.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,26 +17,37 @@ import ru.harmony.serverboot.service.SpecService;
 import ru.harmony.serverboot.service.VacancyService;
 
 @RequestMapping("/harmony/vacancy")
+@Tag(name="Контроллер для вакансий", description="Контроллер позволяющий взаимодействовать с доступными вакансиями")
 @AllArgsConstructor
 @RestController
 public class VacancyController {
     private final VacancyService service;
 
     // Get all Vacancy
-    @GetMapping("/all")
+    @Operation(
+            summary = "Получение вакансий",
+            description = "Позволяет вывести все вакансии в ИС"
+    ) @GetMapping("/all")
     public ResponseEntity<ListResponse<Vacancy>> getAll() {
         return ResponseEntity.ok(new ListResponse<Vacancy>(true, "Вакансии", service.getAll()));
     }
 
     // Get all companies
-    @GetMapping("/all-employee")
+    @Operation(
+            summary = "Получение компаний",
+            description = "Позволяет вывести всей доступные компании в ИС"
+    ) @GetMapping("/all-employee")
     public ResponseEntity<ListResponse<String>> getAllByEmployee() {
         return ResponseEntity.ok(new ListResponse<String>(true, "Все компании", service.getAllByEmployee()));
     }
 
     // Get all Vacancy by WorkExperience
-    @GetMapping("/all-workexp")
-    public ResponseEntity<ListResponse<Vacancy>> getAllByWorkExp(@RequestParam Long workExp) {
+    @Operation(
+            summary = "Получение вакансий по ключу",
+            description = "Позволяет вывести вакансии по {опыт работы}"
+    ) @GetMapping("/all-workexp")
+    public ResponseEntity<ListResponse<Vacancy>> getAllByWorkExp(
+            @Parameter(description = "Опыт работы") @RequestParam Long workExp) {
         if (!service.getAllByWorkExp(workExp).isEmpty()) {
             return ResponseEntity.ok(new ListResponse<Vacancy>(true, "Вакансии по опыту работы {" + workExp +"}", service.getAllByWorkExp(workExp)));
         } else {
@@ -42,8 +56,12 @@ public class VacancyController {
     }
 
     // Get all Vacancy by Wage
-    @GetMapping("/all-wage")
-    public ResponseEntity<ListResponse<Vacancy>> getAllByWage(@RequestParam String wage) {
+    @Operation(
+            summary = "Получение вакансий по ключу",
+            description = "Позволяет вывести вакансии по {заработной плате}"
+    ) @GetMapping("/all-wage")
+    public ResponseEntity<ListResponse<Vacancy>> getAllByWage(
+            @Parameter(description = "Заработная плата") @RequestParam String wage) {
         if (!service.getAllByWage(wage).isEmpty()) {
             return ResponseEntity.ok(new ListResponse<Vacancy>(true, "Вакансии по заработной плате {" + wage + "}", service.getAllByWage(wage)));
         } else {
@@ -52,8 +70,12 @@ public class VacancyController {
     }
 
     // Get Vacancy by Id
-    @GetMapping
-    public ResponseEntity<DataResponse<Vacancy>> getById(@RequestParam Long id) {
+    @Operation(
+            summary = "Получение вакансии по ключу",
+            description = "Позволяет получить вакансию по {уникальному идентификатору}"
+    ) @GetMapping
+    public ResponseEntity<DataResponse<Vacancy>> getById(
+            @Parameter(description = "Уникальный идентификатор") @RequestParam Long id) {
         if (service.findById(id).isPresent()) {
             return ResponseEntity.ok(new DataResponse<Vacancy>(true, "Найдена вакансия", service.findById(id).orElseThrow()));
         } else {
@@ -62,14 +84,22 @@ public class VacancyController {
     }
 
     // Save new Vacancy
-    @PostMapping
-    public ResponseEntity<DataResponse<Vacancy>> save(@RequestBody Vacancy vacancy) {
+    @Operation(
+            summary = "Добавление вакании",
+            description = "Добавление новой вакансии в ИС"
+    ) @PostMapping
+    public ResponseEntity<DataResponse<Vacancy>> save(
+            @Parameter(description = "Вакансия") @RequestBody Vacancy vacancy) {
         return ResponseEntity.ok(new DataResponse<Vacancy>(true, "Добавлена новая вакансия", service.save(vacancy)));
     }
 
     // Delete Vacancy by Id
-    @DeleteMapping
-    public ResponseEntity<BaseResponse> deleteById(@RequestParam Long id) {
+    @Operation(
+            summary = "Удаление вакансии по ключу",
+            description = "Удаляет вакансию из ИС по {уникальному идентификатору}"
+    ) @DeleteMapping
+    public ResponseEntity<BaseResponse> deleteById(
+            @Parameter(description = "Уникальный идентификатор") @RequestParam Long id) {
         if (service.findById(id).isPresent()) {
             service.delete(id);
             return ResponseEntity.ok(new BaseResponse(true, "Вакансия удалена"));
@@ -79,9 +109,14 @@ public class VacancyController {
     }
 
     // Delete Vacancy by VacancyName and SpecName
-    @DeleteMapping("/del-bynames")
+    @Operation(
+            summary = "Удаление вакансии по ключу",
+            description = "Удаляет вакансию из ИС по {заголовку вакансии, название специализации}"
+    ) @DeleteMapping("/del-bynames")
     @Transactional
-    public ResponseEntity<BaseResponse> deleteByNameAndSpecName(@RequestParam String name, String specName) {
+    public ResponseEntity<BaseResponse> deleteByNameAndSpecName(
+            @Parameter(description = "Заголовок вакансии") @RequestParam String name,
+            @Parameter(description = "Название специализации") @RequestParam String specName) {
         if (!service.findByNameSpecAndSpecName(name, specName).isEmpty()) {
             service.deleteByNameAndSpecName(name, specName);
             return ResponseEntity.ok(new BaseResponse(true, "Вакансия удалена"));
@@ -91,8 +126,12 @@ public class VacancyController {
     }
 
     // Update Vacancy
-    @PutMapping
-    public ResponseEntity<BaseResponse> update(@RequestBody Vacancy vacancy) {
+    @Operation(
+            summary = "Обновление вакансии",
+            description = "Изменяет существующую вакансию в ИС"
+    ) @PutMapping
+    public ResponseEntity<BaseResponse> update(
+            @Parameter(description = "Вакансия") @RequestBody Vacancy vacancy) {
         if (service.findById(vacancy.getId()).isPresent()) {
             service.update(vacancy);
             return ResponseEntity.ok(new BaseResponse(true, "Вакансия была обновлена"));
