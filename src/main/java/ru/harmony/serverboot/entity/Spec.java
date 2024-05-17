@@ -15,11 +15,11 @@ import lombok.Setter;
 @Table(name ="spec")
 @Schema(description = "Специализация")
 public class Spec {
-    @Schema(description = "Уникальный идентификатор")
+    @Schema(name = "Уникальный идентификатор")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Schema(description = "Название специализации")
+    @Schema(name = "Название специализации")
     private String name;
 }

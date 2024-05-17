@@ -1,5 +1,8 @@
 package ru.harmony.serverboot.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,44 +13,64 @@ import ru.harmony.serverboot.response.ListResponse;
 import ru.harmony.serverboot.service.WorkerService;
 
 @RequestMapping("/harmony/worker")
+@Tag(name="Контроллер для сотрудников", description="Контроллер позволяющий взаимодействовать с сотрудниками")
 @AllArgsConstructor
 @RestController
 public class WorkerController {
     private final WorkerService service;
 
     // Get all Worker
-    @GetMapping("/all")
+    @Operation(
+            summary = "Получение сотрудников",
+            description = "Позволяет вывести всех сотрудников в ИС"
+    ) @GetMapping("/all")
     public ResponseEntity<ListResponse<Worker>> getAll(){
         return ResponseEntity.ok(new ListResponse<Worker>(true,  "Сотрудники", service.getAll()));
     }
 
     // Get all Worker who has access to IS
-    @GetMapping("/all-accessIn")
+    @Operation(
+            summary = "Получение сотрудников по фильтру",
+            description = "Позволяет вывести всех сотрудников которые имеют доступ к ИС"
+    ) @GetMapping("/all-accessIn")
     public ResponseEntity<ListResponse<Worker>> getAllByAccessIn(){
         return ResponseEntity.ok(new ListResponse<Worker>(true,  "Сотрудники  у которых есть доступ к ИС", service.getAllByAccessIn()));
     }
 
     // Get all Worker who doesn't have access to IS
-    @GetMapping("/all-accessOut")
+    @Operation(
+            summary = "Получение сотрудников по фильтру",
+            description = "Позволяет вывести всех сотрудников которые не имеют доступ к ИС"
+    ) @GetMapping("/all-accessOut")
     public ResponseEntity<ListResponse<Worker>> getAllByAccessOut(){
         return ResponseEntity.ok(new ListResponse<Worker>(true,  "Сотрудники  у которых нет доступа к ИС", service.getAllByAccessOut()));
     }
 
     // Get all Recruters
-    @GetMapping("/all-recruter")
+    @Operation(
+            summary = "Получение сотрудников по фильтру",
+            description = "Позволяет вывести всех сотрудников с должностью рекрутер"
+    ) @GetMapping("/all-recruter")
     public ResponseEntity<ListResponse<Worker>> getAllRecruter(){
         return ResponseEntity.ok(new ListResponse<Worker>(true,  "Сотрудники  рекрутеры", service.getAllRecruter()));
     }
 
-    // Get all Worker by WorkerName
-    @GetMapping("/all-workerFilter")
+    // Get all Worker by surname
+    @Operation(
+            summary = "Получение сотрудников по фильтру",
+            description = "Позволяет вывести всех сотрудников в алфавитном порядке по фамилии"
+    ) @GetMapping("/all-workerFilter")
     public ResponseEntity<ListResponse<Worker>> getAllWorkerFiltered(){
         return ResponseEntity.ok(new ListResponse<Worker>(true,  "Сотрудники  по фильтру фамилия", service.getAllBySurnameFilter()));
     }
 
     // Get Worker by Id
-    @GetMapping
-    public ResponseEntity<DataResponse<Worker>> getById(@RequestParam Long id) {
+    @Operation(
+            summary = "Получение сотрудника по ключу",
+            description = "Позволяет получить сотрудника по {уникальному идентификатору}"
+    ) @GetMapping
+    public ResponseEntity<DataResponse<Worker>> getById(
+            @Parameter(description = "Уникальный идентификатор") @RequestParam Long id) {
         if (service.findById(id).isPresent()) {
             return ResponseEntity.ok(new DataResponse<Worker>(true, "Найден сотрудник", service.findById(id).orElseThrow()));
         } else {
@@ -56,8 +79,12 @@ public class WorkerController {
     }
 
     // Get Worker by AccessID
-    @GetMapping("/access")
-    public ResponseEntity<ListResponse<Worker>> getByAccess(@RequestParam Long id) {
+    @Operation(
+            summary = "Получение сотрудника по ключу",
+            description = "Позволяет получить сотрудника по {уникальному идентификатору доступа}"
+    ) @GetMapping("/access")
+    public ResponseEntity<ListResponse<Worker>> getByAccess(
+            @Parameter(description = "Уникальный идентификатор доступа") @RequestParam Long id) {
         if (!service.findByAccess(id).isEmpty()) {
             return ResponseEntity.ok(new ListResponse<Worker>(true, "Сотрудники с этой ролью", service.findByAccess(id)));
         } else {
@@ -65,9 +92,13 @@ public class WorkerController {
         }
     }
 
-    // Get Worker by filtered WorkerName
-    @GetMapping("/all-name")
-    public ResponseEntity<ListResponse<Worker>> getByName(@RequestParam String name) {
+    // Get Worker by filtered name
+    @Operation(
+            summary = "Получение сотрудника по ключу",
+            description = "Позволяет получить сотрудника по {имя}"
+    ) @GetMapping("/all-name")
+    public ResponseEntity<ListResponse<Worker>> getByName(
+            @Parameter(description = "Имя сотрдуника") @RequestParam String name) {
         if (!service.findByName(name).isEmpty()) {
             return ResponseEntity.ok(new ListResponse<Worker>(true, "Сотрудник с именем {" + name + "}", service.findByName(name)));
         } else {
@@ -76,14 +107,22 @@ public class WorkerController {
     }
 
     // Save new Worker
-    @PostMapping
-    public ResponseEntity<DataResponse<Worker>> save(@RequestBody Worker worker) {
+    @Operation(
+            summary = "Добавление сотрудника",
+            description = "Добавление нового сотрудника в ИС"
+    ) @PostMapping
+    public ResponseEntity<DataResponse<Worker>> save(
+            @Parameter(description = "Сотрудник") @RequestBody Worker worker) {
         return ResponseEntity.ok(new DataResponse<Worker>(true, "Добавлен новый сотрудник", service.save(worker)));
     }
 
     // Update Worker
-    @PutMapping
-    public ResponseEntity<BaseResponse> update(@RequestBody Worker worker) {
+    @Operation(
+            summary = "Обновление сотрудника",
+            description = "Изменяет существующего сотрудника в ИС"
+    ) @PutMapping
+    public ResponseEntity<BaseResponse> update(
+            @Parameter(description = "Сотрудник") @RequestBody Worker worker) {
         if (service.findById(worker.getId()).isPresent()) {
             service.update(worker);
             return ResponseEntity.ok(new BaseResponse(true, "Данные сотрудника былы обновлены"));
@@ -93,8 +132,12 @@ public class WorkerController {
     }
 
     // Delete Worker by Id
-    @DeleteMapping
-    public ResponseEntity<BaseResponse> deleteById(@RequestParam Long id) {
+    @Operation(
+            summary = "Удаление сотрудника по ключу",
+            description = "Удаляет сотрудника из ИС по {уникальному идентификатору}"
+    ) @DeleteMapping
+    public ResponseEntity<BaseResponse> deleteById(
+            @Parameter(description = "Уникальный идентификатор") @RequestParam Long id) {
         if (service.findById(id).isPresent()) {
             service.delete(id);
             return ResponseEntity.ok(new BaseResponse(true, "Сотрудник был удален"));
