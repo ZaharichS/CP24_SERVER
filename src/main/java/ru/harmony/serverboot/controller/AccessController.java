@@ -15,13 +15,14 @@ import ru.harmony.serverboot.service.AccessService;
 public class AccessController {
     private final AccessService service;
 
+    // get all Access
     @GetMapping("/all")
     public ResponseEntity<ListResponse<Access>> getAll(){
         return ResponseEntity.ok(new ListResponse<Access>(true,  "Роли доступа", service.getAll()));
     }
 
     @GetMapping
-    // getById method
+    // get Access by Id
     public ResponseEntity<DataResponse<Access>> getById(@RequestParam Long id) {
         if (service.findById(id).isPresent()) {
             return ResponseEntity.ok(new DataResponse<Access>(true, "Найдена роль доступа", service.findById(id).orElseThrow()));
@@ -30,13 +31,13 @@ public class AccessController {
         }
     }
 
+    // Save new Access
     @PostMapping
     public ResponseEntity<DataResponse<Access>> save(@RequestBody Access access) {
-        // maybe try catch block
-        // or not
         return ResponseEntity.ok(new DataResponse<Access>(true, "Добавлена новая роль доступа", service.save(access)));
     }
 
+    // Update Access
     @PutMapping
     public ResponseEntity<BaseResponse> update(@RequestBody Access access) {
         if (service.findById(access.getId()).isPresent()) {
@@ -47,6 +48,7 @@ public class AccessController {
         }
     }
 
+    // Delete Access by id
     @DeleteMapping
     public ResponseEntity<BaseResponse> deleteById(@RequestParam Long id) {
         if (service.findById(id).isPresent()) {

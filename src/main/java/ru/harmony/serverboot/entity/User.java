@@ -21,7 +21,7 @@ public class User {
     private String login;
     private String password;
 
-    @JsonIgnore
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "worker_id")
     private Worker worker;
 }

@@ -227,3 +227,7 @@ Content-Type: application/json
 
 ### Delete form
 DELETE http://localhost:28245/harmony/form?id=1
+
+
+### User requests
+POST http://localhost:28245/harmony/user

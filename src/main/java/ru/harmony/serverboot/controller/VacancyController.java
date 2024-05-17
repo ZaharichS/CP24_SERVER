@@ -19,18 +19,19 @@ import ru.harmony.serverboot.service.VacancyService;
 public class VacancyController {
     private final VacancyService service;
 
+    // Get all Vacancy
     @GetMapping("/all")
     public ResponseEntity<ListResponse<Vacancy>> getAll() {
         return ResponseEntity.ok(new ListResponse<Vacancy>(true, "Вакансии", service.getAll()));
     }
 
-    // get all companies
+    // Get all companies
     @GetMapping("/all-employee")
     public ResponseEntity<ListResponse<String>> getAllByEmployee() {
         return ResponseEntity.ok(new ListResponse<String>(true, "Все компании", service.getAllByEmployee()));
     }
 
-    // get all vacancy by workExperience
+    // Get all Vacancy by WorkExperience
     @GetMapping("/all-workexp")
     public ResponseEntity<ListResponse<Vacancy>> getAllByWorkExp(@RequestParam Long workExp) {
         if (!service.getAllByWorkExp(workExp).isEmpty()) {
@@ -40,7 +41,7 @@ public class VacancyController {
         }
     }
 
-    // get all vacancy by wage
+    // Get all Vacancy by Wage
     @GetMapping("/all-wage")
     public ResponseEntity<ListResponse<Vacancy>> getAllByWage(@RequestParam String wage) {
         if (!service.getAllByWage(wage).isEmpty()) {
@@ -50,8 +51,8 @@ public class VacancyController {
         }
     }
 
+    // Get Vacancy by Id
     @GetMapping
-    // getById method
     public ResponseEntity<DataResponse<Vacancy>> getById(@RequestParam Long id) {
         if (service.findById(id).isPresent()) {
             return ResponseEntity.ok(new DataResponse<Vacancy>(true, "Найдена вакансия", service.findById(id).orElseThrow()));
@@ -60,12 +61,13 @@ public class VacancyController {
         }
     }
 
+    // Save new Vacancy
     @PostMapping
     public ResponseEntity<DataResponse<Vacancy>> save(@RequestBody Vacancy vacancy) {
-        // maybe try catch block
         return ResponseEntity.ok(new DataResponse<Vacancy>(true, "Добавлена новая вакансия", service.save(vacancy)));
     }
 
+    // Delete Vacancy by Id
     @DeleteMapping
     public ResponseEntity<BaseResponse> deleteById(@RequestParam Long id) {
         if (service.findById(id).isPresent()) {
@@ -76,6 +78,7 @@ public class VacancyController {
         }
     }
 
+    // Delete Vacancy by VacancyName and SpecName
     @DeleteMapping("/del-bynames")
     @Transactional
     public ResponseEntity<BaseResponse> deleteByNameAndSpecName(@RequestParam String name, String specName) {
@@ -87,11 +90,9 @@ public class VacancyController {
         }
     }
 
+    // Update Vacancy
     @PutMapping
     public ResponseEntity<BaseResponse> update(@RequestBody Vacancy vacancy) {
-        // maybe try catch block
-        // for check id in request body ? or not
-        // and send message if it's true
         if (service.findById(vacancy.getId()).isPresent()) {
             service.update(vacancy);
             return ResponseEntity.ok(new BaseResponse(true, "Вакансия была обновлена"));

@@ -19,33 +19,38 @@ import java.util.Optional;
 public class WorkerController {
     private final WorkerService service;
 
+    // Get all Worker
     @GetMapping("/all")
     public ResponseEntity<ListResponse<Worker>> getAll(){
         return ResponseEntity.ok(new ListResponse<Worker>(true,  "Сотрудники", service.getAll()));
     }
 
+    // Get all Worker who has access to IS
     @GetMapping("/all-accessIn")
     public ResponseEntity<ListResponse<Worker>> getAllByAccessIn(){
         return ResponseEntity.ok(new ListResponse<Worker>(true,  "Сотрудники  у которых есть доступ к ИС", service.getAllByAccessIn()));
     }
 
+    // Get all Worker who doesn't have access to IS
     @GetMapping("/all-accessOut")
     public ResponseEntity<ListResponse<Worker>> getAllByAccessOut(){
         return ResponseEntity.ok(new ListResponse<Worker>(true,  "Сотрудники  у которых нет доступа к ИС", service.getAllByAccessOut()));
     }
 
+    // Get all Recruters
     @GetMapping("/all-recruter")
     public ResponseEntity<ListResponse<Worker>> getAllRecruter(){
         return ResponseEntity.ok(new ListResponse<Worker>(true,  "Сотрудники  рекрутеры", service.getAllRecruter()));
     }
 
+    // Get all Worker by WorkerName
     @GetMapping("/all-workerFilter")
     public ResponseEntity<ListResponse<Worker>> getAllWorkerFiltered(){
         return ResponseEntity.ok(new ListResponse<Worker>(true,  "Сотрудники  по фильтру name", service.getAllByNameFilter()));
     }
 
+    // Get Worker by Id
     @GetMapping
-    // getById method
     public ResponseEntity<DataResponse<Worker>> getById(@RequestParam Long id) {
         if (service.findById(id).isPresent()) {
             return ResponseEntity.ok(new DataResponse<Worker>(true, "Найден сотрудник", service.findById(id).orElseThrow()));
@@ -54,8 +59,8 @@ public class WorkerController {
         }
     }
 
+    // Get Worker by AccessID
     @GetMapping("/access")
-    // getById method
     public ResponseEntity<ListResponse<Worker>> getByAccess(@RequestParam Long id) {
         if (!service.findByAccess(id).isEmpty()) {
             return ResponseEntity.ok(new ListResponse<Worker>(true, "Сотрудники с этой ролью", service.findByAccess(id)));
@@ -64,8 +69,8 @@ public class WorkerController {
         }
     }
 
+    // Get Worker by filtered WorkerName
     @GetMapping("/all-name")
-    // getById method
     public ResponseEntity<ListResponse<Worker>> getByName(@RequestParam String name) {
         if (!service.findByName(name).isEmpty()) {
             return ResponseEntity.ok(new ListResponse<Worker>(true, "Сотрудник с ФИО {" + name + "}", service.findByName(name)));
@@ -74,12 +79,13 @@ public class WorkerController {
         }
     }
 
+    // Save new Worker
     @PostMapping
     public ResponseEntity<DataResponse<Worker>> save(@RequestBody Worker worker) {
-        // maybe try catch block
         return ResponseEntity.ok(new DataResponse<Worker>(true, "Добавлен новый сотрудник", service.save(worker)));
     }
 
+    // Update Worker
     @PutMapping
     public ResponseEntity<BaseResponse> update(@RequestBody Worker worker) {
         if (service.findById(worker.getId()).isPresent()) {
@@ -90,6 +96,7 @@ public class WorkerController {
         }
     }
 
+    // Delete Worker by Id
     @DeleteMapping
     public ResponseEntity<BaseResponse> deleteById(@RequestParam Long id) {
         if (service.findById(id).isPresent()) {

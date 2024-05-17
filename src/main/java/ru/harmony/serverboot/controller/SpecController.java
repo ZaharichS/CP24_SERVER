@@ -17,13 +17,14 @@ import ru.harmony.serverboot.service.SpecService;
 public class SpecController {
     private final SpecService service;
 
+    // Get all Spec
     @GetMapping("/all")
     public ResponseEntity<ListResponse<Spec>> getAll() {
         return ResponseEntity.ok(new ListResponse<Spec>(true, "Категории", service.getAll()));
     }
 
+    // Get Spec by Id
     @GetMapping
-    // getById method
     public ResponseEntity<DataResponse<Spec>> getById(@RequestParam Long id) {
         if (service.findById(id).isPresent()) {
             return ResponseEntity.ok(new DataResponse<Spec>(true, "Найдена категория", service.findById(id).orElseThrow()));
@@ -32,16 +33,15 @@ public class SpecController {
         }
     }
 
+    // Save new Spec
     @PostMapping
     public ResponseEntity<DataResponse<Spec>> save(@RequestBody Spec spec) {
-        // maybe try catch block
         return ResponseEntity.ok(new DataResponse<Spec>(true, "Добавлена новая категория", service.save(spec)));
     }
 
+    // Delete Spec by Id
     @DeleteMapping
     public ResponseEntity<BaseResponse> deleteById(@RequestParam Long id) {
-        // maybe try catch block
-        // for check id in request body ? or not
         if (service.findById(id).isPresent()) {
             service.delete(id);
             return ResponseEntity.ok(new BaseResponse(true, "Категория была удалена"));
@@ -50,11 +50,9 @@ public class SpecController {
         }
     }
 
+    // Update Spec
     @PutMapping
     public ResponseEntity<BaseResponse> update(@RequestBody Spec spec) {
-        // maybe try catch block
-        // for check id in request body ? or not
-        // and send message if it's true
         if (service.findById(spec.getId()).isPresent()) {
             service.update(spec);
             return ResponseEntity.ok(new BaseResponse(true, "Данные категории были обновлены"));

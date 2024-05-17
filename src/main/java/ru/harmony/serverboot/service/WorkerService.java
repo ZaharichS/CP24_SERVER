@@ -35,7 +35,7 @@ public class WorkerService {
     }
 
 
-    // find access by id
+    // find Worker by id
     public Optional<Worker> findById(Long id) {
         return repo.findById(id);
     }
