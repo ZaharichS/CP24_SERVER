@@ -17,7 +17,10 @@ public class Worker {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String workerName;
+    private String name;
+    private String surName;
+    private String lastName;
+
     private String position;
 
     // place for relationship "access"

@@ -29,8 +29,8 @@ public class FormService {
     }
 
     // find  Form by aspname
-    public List<Form> findByAspName(String name) {
-        return repo.findByAspName(name);
+    public List<Form> findByAspName(String surname, String name, String lastname) {
+        return repo.findBySurNameAndNameAndLastName(surname, name, lastname);
     }
 
     // find  Form by form header and spec
@@ -40,8 +40,8 @@ public class FormService {
 
 
     // find  Form by AspName but filter
-    public List<Form> findByFilterAspName() {
-        return repo.findAllByOrderByAspName();
+    public List<Form> findByFilterSurname() {
+        return repo.findAllByOrderBySurName();
     }
 
     // find  Form by AspBirthDate
@@ -62,8 +62,8 @@ public class FormService {
     }
 
     // delete Form by aspname
-    public Integer deleteByAspName(String name) {
-        return repo.deleteByAspName(name);
+    public Integer deleteByAspName(String name, String surname, String lastname) {
+        return repo.deleteBySurNameAndNameAndLastName(name, surname, lastname);
     }
 
     // delete Form by form header and spec

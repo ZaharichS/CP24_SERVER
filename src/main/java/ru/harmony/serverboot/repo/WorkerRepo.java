@@ -23,7 +23,7 @@ public interface WorkerRepo extends JpaRepository<Worker, Long> {
     List<Worker> findByRecruter();
 
     //@Query("SELECT w FROM Worker WHERE w.")
-    List<Worker> findByWorkerName(String name);
+    List<Worker> findByName(String name);
 
-    List<Worker> findAllByOrderByWorkerName();
+    List<Worker> findAllByOrderBySurName();
 }

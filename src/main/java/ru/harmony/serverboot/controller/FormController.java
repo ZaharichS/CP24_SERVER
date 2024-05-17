@@ -37,11 +37,11 @@ public class FormController {
 
     // Get Form by AspirantName
     @GetMapping("/all-aspName")
-    public ResponseEntity<ListResponse<Form>> getByAspName(@RequestParam String name) {
-        if (!service.findByAspName(name).isEmpty()) {
-            return ResponseEntity.ok(new ListResponse<Form>(true, "Анкеты по ФИО {" + name +"}", service.findByAspName(name)));
+    public ResponseEntity<ListResponse<Form>> getByAspName(@RequestParam String surname,@RequestParam String name, @RequestParam String lastname) {
+        if (!service.findByAspName(surname, name, lastname).isEmpty()) {
+            return ResponseEntity.ok(new ListResponse<Form>(true, "Анкеты по ФИО {" + surname +", " + name + "," + lastname +"}", service.findByAspName(surname, name, lastname)));
         } else {
-            return ResponseEntity.badRequest().body(new ListResponse<Form>(false, "Анкета по ФИО {" + name + "} не найдена", null));
+            return ResponseEntity.badRequest().body(new ListResponse<Form>(false, "Анкета по ФИО {" + surname +", " + name + "," + lastname + "} не найдена", null));
         }
     }
 
@@ -58,7 +58,7 @@ public class FormController {
     // Get all Form by AspirantName filtered
     @GetMapping("/all-surname")
     public ResponseEntity<ListResponse<Form>> getAllBySurname() {
-            return ResponseEntity.ok(new ListResponse<Form>(true, "Анкеты", service.findByFilterAspName()));
+            return ResponseEntity.ok(new ListResponse<Form>(true, "Анкеты", service.findByFilterSurname()));
     }
 
     // Save new Form
@@ -83,18 +83,19 @@ public class FormController {
         if (!service.findBySpec(spec).isEmpty()) {
             return ResponseEntity.ok(new ListResponse<Form>(true, "Найдена анкеты по категории {" + spec + "}", service.findBySpec(spec)));
         } else {
-            return ResponseEntity.badRequest().body(new ListResponse<Form>(false, "Анкета не найдена", null));
+            return ResponseEntity.badRequest().body(new ListResponse<Form>(false, "Анкета по категории {" + spec + "}не найдена", null));
         }
     }
 
     // Delete form by AspirantName
     @DeleteMapping("del-aspname")
-    public ResponseEntity<BaseResponse> deleteByAspName(@RequestParam String name) {
-        if (!service.findByAspName(name).isEmpty()) {
-            service.deleteByAspName(name);
+    @Transactional
+    public ResponseEntity<BaseResponse> deleteByAspName(@RequestParam String name, @RequestParam String surname, @RequestParam String lastname) {
+        if (!service.findByAspName(surname, name, lastname).isEmpty()) {
+            service.deleteByAspName(surname, name, lastname);
             return ResponseEntity.ok(new BaseResponse(true, "Анкета удалена"));
         } else {
-            return ResponseEntity.badRequest().body(new BaseResponse(false, "Анкета не найдена и не удалена"));
+            return ResponseEntity.badRequest().body(new BaseResponse(false, "Анкета по ФИО {" + surname +", " + name + "," + lastname + "} не найдена и не удалена"));
         }
     }
 

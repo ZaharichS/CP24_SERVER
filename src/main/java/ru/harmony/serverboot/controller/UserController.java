@@ -37,9 +37,12 @@ public class UserController {
     // Get User who Recruter
     @GetMapping("/all-userAccess")
     public ResponseEntity<ListResponse<User>> getByAccess(@RequestParam String name) {
-            return ResponseEntity.ok(new ListResponse<User>(true, "Найденые пользователь по {" + name +"}", service.getByAccess(name)));
+        if (!service.getByAccess(name).isEmpty()) {
+            return ResponseEntity.ok(new ListResponse<User>(true, "Найденые пользователь по {" + name + "}", service.getByAccess(name)));
+        } else {
+            return ResponseEntity.badRequest().body(new ListResponse<>(false, "Пользователи с ролью {" + name + "} не найден", null));
+        }
     }
-
     // Save new User
     @PostMapping
     public ResponseEntity<DataResponse<User>> save(@RequestBody User user) {

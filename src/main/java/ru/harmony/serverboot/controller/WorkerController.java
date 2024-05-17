@@ -3,15 +3,11 @@ package ru.harmony.serverboot.controller;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.harmony.serverboot.entity.Access;
 import ru.harmony.serverboot.entity.Worker;
 import ru.harmony.serverboot.response.BaseResponse;
 import ru.harmony.serverboot.response.DataResponse;
 import ru.harmony.serverboot.response.ListResponse;
 import ru.harmony.serverboot.service.WorkerService;
-
-import java.util.List;
-import java.util.Optional;
 
 @RequestMapping("/harmony/worker")
 @AllArgsConstructor
@@ -46,7 +42,7 @@ public class WorkerController {
     // Get all Worker by WorkerName
     @GetMapping("/all-workerFilter")
     public ResponseEntity<ListResponse<Worker>> getAllWorkerFiltered(){
-        return ResponseEntity.ok(new ListResponse<Worker>(true,  "Сотрудники  по фильтру name", service.getAllByNameFilter()));
+        return ResponseEntity.ok(new ListResponse<Worker>(true,  "Сотрудники  по фильтру фамилия", service.getAllBySurnameFilter()));
     }
 
     // Get Worker by Id
@@ -73,9 +69,9 @@ public class WorkerController {
     @GetMapping("/all-name")
     public ResponseEntity<ListResponse<Worker>> getByName(@RequestParam String name) {
         if (!service.findByName(name).isEmpty()) {
-            return ResponseEntity.ok(new ListResponse<Worker>(true, "Сотрудник с ФИО {" + name + "}", service.findByName(name)));
+            return ResponseEntity.ok(new ListResponse<Worker>(true, "Сотрудник с именем {" + name + "}", service.findByName(name)));
         } else {
-            return ResponseEntity.badRequest().body(new ListResponse<Worker>(false, "Сотрудник с этим ФИО {" + name + "} не найден", null));
+            return ResponseEntity.badRequest().body(new ListResponse<Worker>(false, "Сотрудник с этим именем {" + name + "} не найден", null));
         }
     }
 

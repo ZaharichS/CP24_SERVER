@@ -2,7 +2,6 @@ package ru.harmony.serverboot.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.harmony.serverboot.entity.Access;
 import ru.harmony.serverboot.entity.Worker;
 import ru.harmony.serverboot.repo.WorkerRepo;
 
@@ -30,8 +29,8 @@ public class WorkerService {
         return repo.findByRecruter();
     }
 
-    public List<Worker> getAllByNameFilter() {
-        return repo.findAllByOrderByWorkerName();
+    public List<Worker> getAllBySurnameFilter() {
+        return repo.findAllByOrderBySurName();
     }
 
 
@@ -58,6 +57,6 @@ public class WorkerService {
     }
 
     public List<Worker> findByName(String name) {
-        return repo.findByWorkerName(name);
+        return repo.findByName(name);
     }
 }

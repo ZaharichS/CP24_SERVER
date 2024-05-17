@@ -13,10 +13,10 @@ public interface FormRepo extends JpaRepository<Form, Long> {
 //    List<Form> findBySpec(@Param("spec") String spec);
     List<Form> findByVacancySpecName(String spec);
 
-    List<Form> findAllByOrderByAspName();
+    List<Form> findAllByOrderBySurName();
 
-    List<Form> findByAspName(String aspName);
-    Integer deleteByAspName(String aspName);
+    List<Form> findBySurNameAndNameAndLastName(String surname, String name, String lastname);
+    Integer deleteBySurNameAndNameAndLastName(String surname, String name, String lastname);
 
     List<Form> findByFormHeaderAndVacancySpecName(String name, String spec);
     Integer deleteByFormHeaderAndVacancySpecName(String name, String spec);
