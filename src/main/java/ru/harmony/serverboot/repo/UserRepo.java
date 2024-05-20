@@ -12,4 +12,6 @@ public interface UserRepo extends JpaRepository<User, Long> {
 //    @Query("SELECT u FROM User u JOIN u.worker.access.name b WHERE b = :name")
 //    List<User> findByRecruter(String name);
     List<User> findByWorkerAccessName(String name);
+
+    User findByLoginAndPassword(String login, String password);
 }

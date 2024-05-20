@@ -58,6 +58,22 @@ public class UserController {
             return ResponseEntity.badRequest().body(new ListResponse<>(false, "Пользователи с ролью {" + name + "} не найден", null));
         }
     }
+
+    // Get User by user data
+    @Operation(
+            summary = "Получение пользователей по ключу",
+            description = "Параметризированный поиск по {логин, пароль}"
+    ) @GetMapping("/all-userData")
+    public ResponseEntity<DataResponse<User>> getByUserData(
+            @Parameter(description = "Логин") @RequestParam String login,
+            @Parameter(description = "Пароль") @RequestParam String password) {
+            if (service.getByUserData(login, password) != null) {
+            return ResponseEntity.ok(new DataResponse<>(true, "Пользователь по данным ", service.getByUserData(login, password)));
+        } else {
+            return ResponseEntity.badRequest().body(new DataResponse<>(false, "Пользователи с такими данными не найден", null));
+        }
+    }
+
     // Save new User
     @Operation(
             summary = "Добавление пользователя",

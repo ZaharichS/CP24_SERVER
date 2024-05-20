@@ -25,6 +25,10 @@ public class UserService {
         return repo.findByWorkerAccessName(name);
     }
 
+    public User getByUserData(String login, String password) {
+        return repo.findByLoginAndPassword(login, password);
+    }
+
     public User save(User user) {
         return repo.save(user);
     }
