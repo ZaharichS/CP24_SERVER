@@ -14,4 +14,7 @@ public interface UserRepo extends JpaRepository<User, Long> {
     List<User> findByWorkerAccessName(String name);
 
     User findByLoginAndPassword(String login, String password);
+
+    @Query("SELECT u FROM User u JOIN Worker w ON u.worker.id=w.id JOIN Access a ON w.access.id=a.id WHERE u.login=:login AND u.password=:password AND (a.name IN ('Рекрутер','Администратор'))")
+    User byAccees(String login, String password);
 }

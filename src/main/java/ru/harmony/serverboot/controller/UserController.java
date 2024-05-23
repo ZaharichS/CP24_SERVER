@@ -74,6 +74,21 @@ public class UserController {
         }
     }
 
+    // Get User by user data and access
+    @Operation(
+            summary = "Получение пользователей по ключу и доступу к ИС",
+            description = "Параметризированный поиск по {логин, пароль}"
+    ) @GetMapping("/all-userDataAccess")
+    public ResponseEntity<DataResponse<User>> getByUserDataAndAccess(
+            @Parameter(description = "Логин") @RequestParam String login,
+            @Parameter(description = "Пароль") @RequestParam String password) {
+        if (service.getByUserAccess(login, password) != null) {
+            return ResponseEntity.ok(new DataResponse<>(true, "Пользователь по данным и с доступом к ИС ", service.getByUserAccess(login, password)));
+        } else {
+            return ResponseEntity.ok(new DataResponse<>(false, "Пользователи с такими данными не найден", null));
+        }
+    }
+
     // Save new User
     @Operation(
             summary = "Добавление пользователя",
