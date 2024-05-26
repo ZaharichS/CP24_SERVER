@@ -33,6 +33,10 @@ public class UserService {
         return repo.byAccees(login, password);
     }
 
+    public User getByAdminUserAccess(String login, String password) {
+        return repo.byAdmin(login, password);
+    }
+
     public User save(User user) {
         return repo.save(user);
     }

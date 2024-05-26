@@ -89,6 +89,21 @@ public class UserController {
         }
     }
 
+    // Get admin User by user data and access
+    @Operation(
+            summary = "Получение пользователей по ключу и доступу к ИС",
+            description = "Параметризированный поиск по {логин, пароль}"
+    ) @GetMapping("/all-Admin")
+    public ResponseEntity<DataResponse<User>> getByAdminAccess(
+            @Parameter(description = "Логин") @RequestParam String login,
+            @Parameter(description = "Пароль") @RequestParam String password) {
+        if (service.getByAdminUserAccess(login, password) != null) {
+            return ResponseEntity.ok(new DataResponse<>(true, "Пользователь по данным и с доступом к ИС ", service.getByAdminUserAccess(login, password)));
+        } else {
+            return ResponseEntity.ok(new DataResponse<>(false, "Пользователи с такими данными не найден", null));
+        }
+    }
+
     // Save new User
     @Operation(
             summary = "Добавление пользователя",
